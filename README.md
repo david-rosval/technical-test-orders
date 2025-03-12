@@ -28,7 +28,7 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
   ```bash
-  git clone https://github.com/your-username/technical-test.git
+  git clone https://github.com/david-rosval/technical-test-orders.git
   cd technical-test
   ```
 
