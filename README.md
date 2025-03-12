@@ -5,10 +5,10 @@ This project is a technical test about an Order Management System built with Rea
 ## Table of Contents
 
 - [Order Management System](#order-management-system)
-  - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [Technologies](#technologies)
-  - [Installation](#installation)
+- [Table of Contents](#table-of-contents)
+- [Introduction](#introduction)
+- [Technologies](#technologies)
+- [Installation](#installation)
 
 ## Introduction
 
