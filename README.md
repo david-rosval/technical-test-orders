@@ -5,10 +5,10 @@ This project is a technical test about an Order Management System built with Rea
 ## Table of Contents
 
 - [Order Management System](#order-management-system)
-  - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [Technologies](#technologies)
-  - [Installation](#installation)
+- [Table of Contents](#table-of-contents)
+- [Introduction](#introduction)
+- [Technologies](#technologies)
+- [Installation](#installation)
 
 ## Introduction
 
@@ -28,7 +28,7 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
   ```bash
-  git clone https://github.com/your-username/technical-test.git
+  git clone https://github.com/david-rosval/technical-test-orders.git
   cd technical-test
   ```
 
