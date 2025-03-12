@@ -1,8 +1,27 @@
 import { Link } from "react-router";
-import { SAMPLE_ROWS } from "../consts";
 import DeleteButton from "../components/DeleteButton";
+import { useEffect, useState } from "react";
+import { getOrders } from "../utils/api";
+import { OrderRow } from "../types";
 
 export default function MyOrders() {
+  const [ordersRows, setOrdersRows] = useState<OrderRow[]>([])
+
+  useEffect(() => {
+    const orders = getOrders()
+    const ordersFormatted = orders.map(order => {
+      return {
+        id: order.orderInfo.id,
+        orderNumber: order.orderInfo.orderNumber,
+        date: order.orderInfo.date,
+        productsQty: order.orderProducts.length,
+        finalPrice: order.orderInfo.finalPrice,
+      } 
+    })
+    setOrdersRows(ordersFormatted)
+  }, [])
+  
+
   return (
     <div>
       <h1>My Orders</h1>
@@ -19,7 +38,7 @@ export default function MyOrders() {
           </tr>
         </thead>
         <tbody>
-          {SAMPLE_ROWS.map((order) => (
+          {ordersRows.map((order) => (
             <tr key={order.id}>
               <td>{order.id}</td>
               <td>{order.orderNumber}</td>
@@ -29,7 +48,7 @@ export default function MyOrders() {
               <td>
                 <div>
                   <Link to={`/add-order/${order.id}`}>Edit</Link>
-                  <DeleteButton />
+                  <DeleteButton confirmationText="Do you want to delete this order?" onConfirm={() => console.log("delete order")} />
                 </div>
               </td>
             </tr>

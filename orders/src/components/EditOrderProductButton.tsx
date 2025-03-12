@@ -1,26 +1,19 @@
-import { useEffect, useState } from "react"
-import { Product, ProductTableRow } from "../types"
-import { getProducts } from "../utils/api"
+import { useState } from "react"
+import { ProductTableRow } from "../types"
+import { SAMPLE_PRODUCTS } from "../consts"
 
-export default function AddNewProductButton({
+export default function EditOrderProductButton({
+  product,
   setProducts,
   products
 }: {
+  product: ProductTableRow
   setProducts: React.Dispatch<React.SetStateAction<ProductTableRow[]>>
   products: ProductTableRow[]
 }) {
-  const [productsModal, setProductsModal] = useState(false)
-  const [availableProducts, setAvailableProducts] = useState<Product[]>([])
-
-  useEffect(() => {
-    const obtainedProducts = getProducts()
-    setAvailableProducts(obtainedProducts)
-  }, [])
+  const [editModal, setEditModal] = useState(false)
   
-
-  const toggleModal = () => {
-    setProductsModal(prev => !prev)
-  }
+  const toggleModal = () => setEditModal(prev => !prev)
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -28,8 +21,8 @@ export default function AddNewProductButton({
     const { elements } = event.currentTarget
 
     
-    const productIdItem = elements.namedItem("productId")
-    const quantityItem = elements.namedItem("quantity")
+    const productIdItem = elements.namedItem("productIdEdited")
+    const quantityItem = elements.namedItem("quantityEdited")
 
     const isInputProductId = productIdItem instanceof HTMLSelectElement
     const isInputQuantity = quantityItem instanceof HTMLInputElement
@@ -40,11 +33,11 @@ export default function AddNewProductButton({
 
     const quantity = parseInt(quantityItem.value)
 
-    const product = availableProducts.find(product => product.id === productId)
+    const productFound = SAMPLE_PRODUCTS.find(p => p.id === productId)
 
-    if (!product) return 
+    if (!productFound) return 
 
-    const { unitPrice, name } = product
+    const { unitPrice, name } = productFound
 
     const subTotal = unitPrice * quantity
 
@@ -63,37 +56,34 @@ export default function AddNewProductButton({
     if (!productExisting) {
       setProducts(prev => [...(prev.filter(prod => prod.id !== product.id)), newProductTableRow])
     } else {
-      productExisting.quantity += quantity
-      productExisting.subTotal += subTotal
+      productExisting.quantity = quantity
+      productExisting.subTotal = subTotal
 
-      setProducts(prev => [...(prev.filter(prod => prod.id !== newProductTableRow.id)), productExisting])
+      setProducts(prev => [...(prev.filter(prod => prod.id !== productExisting.id)), productExisting])
     }
 
-    
-    // pass the state
-    //console.log(newOrderProduct)
 
-    setProductsModal(false)
+    setEditModal(false)
   }
 
   return (
     <>
-      <button onClick={toggleModal}>+ New Product</button>
-      {productsModal && (
+      <button onClick={toggleModal}>Edit</button>
+      {editModal && (
         <div>
           <form action="post" onSubmit={handleSubmit} >
             <div>
-              <label htmlFor="productId">Product: </label>
-              <select name="productId" id="productId">
+              <label htmlFor="productIdEdited">Product: </label>
+              <select name="productIdedited" id="productIdEdited" defaultValue={product.id}>
                 <option value="">--Please choose an option--</option>
-                {availableProducts.map((p) => (
+                {SAMPLE_PRODUCTS.map((p) => (
                   <option key={p.id} value={p.id}>{p.name}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label htmlFor="quantity">Quantity: </label>
-              <input type="number" name="quantity" min={1} defaultValue={1} />
+              <label htmlFor="quantityEdited">Quantity: </label>
+              <input type="number" name="quantityEdited" min={1} defaultValue={product.quantity} />
             </div>
             <button type="submit">Confirm & Save</button>
           </form>

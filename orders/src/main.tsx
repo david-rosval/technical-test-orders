@@ -5,8 +5,7 @@ import App from './App.tsx'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import MyOrders from './routes/MyOrders.tsx'
 import AddEditOrderLayout from './routes/AddEditOrderLayout.tsx'
-import AddOrder from './routes/AddOrder.tsx'
-import EditOrder from './routes/EditOrder.tsx'
+import AddEditOrder from './routes/AddEditOrder.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -15,8 +14,8 @@ createRoot(document.getElementById('root')!).render(
         <Route index element={<App />} />
         <Route path="my-orders" element={<MyOrders />} />
         <Route path="add-order" element={<AddEditOrderLayout />} >
-          <Route index element={<AddOrder />} />
-          <Route path=":id" element={<EditOrder />} />
+          <Route index element={<AddEditOrder />} />
+          <Route path=":id" element={<AddEditOrder />} />
         </Route>
       </Routes>
     </BrowserRouter>
