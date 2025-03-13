@@ -3,6 +3,7 @@ import DeleteButton from "../components/DeleteButton";
 import ChangeStatus from "../components/ChangeStatus";
 import useOrders from "../hooks/useOrders";
 import { formatDate } from "../utils";
+import { deleteOrder } from "../utils/orders.api";
 
 export default function MyOrders() {
   const { orders, setOrders, loading } = useOrders()
@@ -18,7 +19,7 @@ export default function MyOrders() {
     } 
   })
 
-  const deleteOrder = async (orderId: number) => {
+  const deleteOrd = async (orderId: number) => {
     try {
       const result = await deleteOrder(orderId)
       console.log(result)
@@ -49,7 +50,7 @@ export default function MyOrders() {
             </tr>
           </thead>
           <tbody>
-            {ordersRows.map((order) => (
+            {ordersRows.sort((a,b) => a.id - b.id).map((order) => (
               <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>{order.orderNumber}</td>
@@ -61,7 +62,7 @@ export default function MyOrders() {
                     {order.status !== "Completed" && (
                       <Link className="edit-button" to={`/add-order/${order.id}`}>Edit</Link>
                     )}
-                    <DeleteButton confirmationText="Do you want to delete this order?" onConfirm={() => deleteOrder(order.id)} />
+                    <DeleteButton confirmationText="Do you want to delete this order?" onConfirm={() => deleteOrd(order.id)} />
                     <ChangeStatus order={order}/>
                   </div>
                 </td>

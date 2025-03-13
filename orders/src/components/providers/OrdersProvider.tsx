@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { OrdersContext } from '../../hooks/useOrders'
 import { FetchedOrder } from '../../types'
-import { getOrders } from '../../utils/api'
+import { getOrders } from '../../utils/orders.api'
 
 export default function OrdersProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<FetchedOrder[]>([])

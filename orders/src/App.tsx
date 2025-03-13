@@ -10,8 +10,9 @@ function App() {
       <div>
         <Link to={"/my-orders"}>My Orders</Link>
       </div>
+      
       <div>
-        <Link to={"/add-order"}>Add Order</Link>
+        <Link to={"/products"}>Products</Link>
       </div>
     </div>
   )

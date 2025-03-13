@@ -25,7 +25,7 @@ export class ProductModel {
       if (product.length === 0) throw new Error(`There are no product with id ${productId}`)
       return product[0]
     } catch (error) {
-      throw new Error('Error obtaining product')
+      throw new Error(error)
     } finally {
       connection.release()
     }
@@ -115,7 +115,7 @@ export class ProductModel {
         DELETE FROM products WHERE id = ?
       `, id)
     } catch (error) {
-      throw new Error('Error deleting product')
+      throw new Error(error)
     } finally {
       connection.release()
     }

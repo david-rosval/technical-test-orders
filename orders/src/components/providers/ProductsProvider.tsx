@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Product } from '../../types'
 import { ProductsContext } from '../../hooks/useProducts'
-import { getProducts } from '../../utils/api'
+import { getProducts } from '../../utils/products.api'
 
 export default function ProductsProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>([])

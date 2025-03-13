@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Status, UpdateOrderStatusBody } from "../types";
 import useOrders from "../hooks/useOrders";
-import { updateOrderStatus } from "../utils/api";
+import { updateOrderStatus } from "../utils/orders.api";
 
 export default function ChangeStatus({
   order

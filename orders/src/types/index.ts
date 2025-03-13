@@ -79,3 +79,10 @@ export type InsertOrderBody = {
 export type UpdateOrderStatusBody = {
   status: Status
 }
+
+export type InsertProductBody = {
+  product: {
+    name: string,
+    unitPrice: number
+  }
+}

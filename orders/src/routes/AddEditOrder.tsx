@@ -6,7 +6,7 @@ import EditOrderProductButton from "../components/EditOrderProductButton";
 import ProductsProvider from "../components/providers/ProductsProvider";
 import { InsertOrderBody, OrderToEdit, ProductTableRow } from "../types";
 import { formatDate, todaysDate } from "../utils";
-import { createOrder, getOrder, updateOrderProducts } from "../utils/api";
+import { createOrder, getOrder, updateOrderProducts } from "../utils/orders.api";
 
 
 export default function AddEditOrder() {
