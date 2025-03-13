@@ -4,7 +4,7 @@ export default function DeleteButton({ onConfirm, confirmationText }: { onConfir
   const [deleteModal, setDeleteModal] = useState(false)
   return (
     <>
-      <button className="delete-button" onClick={() => setDeleteModal(prev => !prev)}>Delete</button>
+      <button className="bg-red-300 dark:bg-red-500 rounded px-3 py-2 cursor-pointer" onClick={() => setDeleteModal(prev => !prev)}>Delete</button>
       {deleteModal && (
         <div>
           <p>{confirmationText}</p>

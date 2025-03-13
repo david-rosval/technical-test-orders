@@ -74,24 +74,25 @@ export default function EditOrderProductButton({
 
   return (
     <>
-      <button className="edit-button" onClick={toggleModal}>Edit</button>
+      <button className="rounded bg-blue-300 dark:bg-blue-500 px-3 py-2 cursor-pointer" onClick={toggleModal}>Edit</button>
       {editModal && (
-        <div>
-          <form action="post" onSubmit={handleSubmit} >
-            <div>
-              <label htmlFor="productIdEdited">Product: </label>
-              <select name="productIdedited" id="productIdEdited" defaultValue={orderProduct.productId}>
+        <div className="fixed inset-0 bg-neutral-900/40 grid place-items-center">
+          <form className="bg-slate-100 dark:bg-neutral-700 p-5 rounded-lg shadow-lg flex flex-col gap-3" action="post" onSubmit={handleSubmit} >
+            <h3 className="text-xl font-semibold">Edit Order Product</h3>
+            <div className="flex items-center justify-between gap-4">
+              <label  htmlFor="productIdEdited">Product: </label>
+              <select name="productIdedited" id="productIdEdited" className="bg-neutral-100 dark:bg-neutral-800 rounded py-2 px-3 disabled:text-neutral-50/30" defaultValue={orderProduct.productId}>
                 <option value="">--Please choose an option--</option>
                 {availableProducts.map((p) => (
                   <option key={p.id} value={p.id}>{p.name}</option>
                 ))}
               </select>
             </div>
-            <div>
+            <div className="flex items-center justify-between gap-4">
               <label htmlFor="quantityEdited">Quantity: </label>
-              <input type="number" name="quantityEdited" min={1} defaultValue={orderProduct.quantity} />
+              <input className="w-20 text-right bg-neutral-100 dark:bg-neutral-800 rounded py-2 px-3" type="number" name="quantityEdited" min={1} defaultValue={orderProduct.quantity} />
             </div>
-            <button type="submit">Confirm & Save</button>
+            <button type="submit" className="p-4 rounded-lg shadow-lg transition-colors duration-200 ease-in-out inline-block bg-green-400  dark:bg-green-600  hover:bg-green-500/80 dark:hover:bg-green-600/80 font-semibold w-fit mt-5 cursor-pointer">Confirm & Save</button>
           </form>
         </div>
       )}

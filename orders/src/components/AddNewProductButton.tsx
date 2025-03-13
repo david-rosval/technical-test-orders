@@ -1,5 +1,5 @@
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import useProducts from "../hooks/useProducts"
 import { ProductTableRow } from "../types"
 
@@ -13,11 +13,27 @@ export default function AddNewProductButton({
   const [productsModal, setProductsModal] = useState(false)
   const { products: availableProducts, loading, error } = useProducts()
 
+  const addOrderProductRef = useRef<HTMLFormElement>(null)
+
+  useEffect(() => {
+    const closeModal = (e: MouseEvent) => {
+      if (productsModal && addOrderProductRef.current && !addOrderProductRef.current.contains(e.target as Node)) {
+        setProductsModal(false)
+      }
+    }
+    
+    document.addEventListener("mousedown", closeModal)
+    return () => {
+      document.removeEventListener("mousedown", closeModal)
+    }
+  }, [productsModal])
   
 
   const toggleModal = () => {
     setProductsModal(prev => !prev)
   }
+
+
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -79,14 +95,15 @@ export default function AddNewProductButton({
 
   return (
     <>
-      <button onClick={toggleModal}>+ New Product</button>
+      <button className="p-4 rounded-lg shadow-lg transition-colors duration-200 ease-in-out inline-block bg-neutral-400  dark:bg-neutral-700  hover:bg-neutral-400/80 dark:hover:bg-neutral-700/80 w-[700px] my-4" type="button" onClick={toggleModal}>+ New Product</button>
       {productsModal && (
-        <div>
-          <form action="post" onSubmit={handleSubmit} >
-            <div>
+        <div className="fixed inset-0 bg-neutral-900/40 grid place-items-center">
+          <form ref={addOrderProductRef} action="post" onSubmit={handleSubmit} className="bg-slate-100 dark:bg-neutral-700 p-5 rounded-lg shadow-lg flex flex-col gap-3" >
+            <h3 className="text-xl font-semibold">Add Product</h3>
+            <div className="flex items-center justify-between gap-4">
               <label htmlFor="productId">Product: </label>
               {!error ? (
-                <select name="productId" id="productId">
+                <select name="productId" id="productId" className="bg-neutral-100 dark:bg-neutral-800 rounded py-2 px-3 disabled:text-neutral-50/30">
                   <option value="">--Please choose an option--</option>
                   {loading && (
                     <option value="" disabled>--Loading products--</option>
@@ -99,11 +116,11 @@ export default function AddNewProductButton({
                 <p>Products not found</p>
               )}
             </div>
-            <div>
-              <label htmlFor="quantity">Quantity: </label>
-              <input type="number" name="quantity" min={1} defaultValue={1} />
+            <div className="flex items-center justify-between gap-4">
+              <label  htmlFor="quantity">Quantity: </label>
+              <input className="w-20 text-right bg-neutral-100 dark:bg-neutral-800 rounded py-2 px-3" type="number" name="quantity" min={1} defaultValue={1} />
             </div>
-            <button type="submit">Confirm & Save</button>
+            <button className="p-4 rounded-lg shadow-lg transition-colors duration-200 ease-in-out inline-block bg-green-400  dark:bg-green-600  hover:bg-green-500/80 dark:hover:bg-green-600/80 font-semibold w-fit mt-5" type="submit">Confirm & Save</button>
           </form>
         </div>
       )}

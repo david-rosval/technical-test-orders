@@ -79,26 +79,26 @@ export default function AddEditProduct() {
   }
 
   return (
-    <div>
-      <h1>{id ? "Edit" : "Add"} Product</h1>
+    <div className="flex flex-col gap-3">
+      <h1 className="text-4xl md:text-6xl font-bold mb-10">{id ? "Edit" : "Add"} Product</h1>
       {!error ? (
-        <form action="post" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="name">Name: </label>
-            <input type="text" name="name" defaultValue={!name ? "" : name}  />
+        <form className="max-w-[400px] flex flex-col gap-3" action="post" onSubmit={handleSubmit}>
+          <div className="w-full flex gap-4 items-center justify-between">
+            <label className="font-semibold" htmlFor="name">Name: </label>
+            <input className="  bg-neutral-100 dark:bg-neutral-900 rounded py-2 px-3" type="text" name="name" defaultValue={!name ? "" : name}  />
             {loading && (
               <Loader />
             )}
           </div>
-          <div> 
-            <label htmlFor="unitPrice">Unit Price {"($)"}: </label>
-            <input type="number" name="unitPrice" defaultValue={!unitPrice ? "" : unitPrice}/> 
+          <div className="w-full flex gap-4 items-center justify-between"> 
+            <label className="font-semibold" htmlFor="unitPrice">Unit Price {"($)"}: </label>
+            <input className=" bg-neutral-100 dark:bg-neutral-900 rounded py-2 px-3" type="number" name="unitPrice" defaultValue={!unitPrice ? "" : unitPrice}/> 
             {loading && (
               <Loader />
             )}
           </div>
           <div>
-            <button disabled={loading ? true : false} type="submit">Save & {id ? "Edit" : "Create"} Product</button>
+            <button className="p-4 rounded-lg shadow-lg transition-colors duration-200 ease-in-out inline-block bg-green-400  dark:bg-green-600  hover:bg-green-500/80 dark:hover:bg-green-600/80 font-semibold w-fit mt-5 cursor-pointer" disabled={loading ? true : false} type="submit">Save & {id ? "Edit" : "Create"} Product</button>
           </div>
         </form>
       ): (
