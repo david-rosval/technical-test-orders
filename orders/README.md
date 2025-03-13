@@ -1,54 +1,50 @@
-# React + TypeScript + Vite
+# Orders Management Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is the frontend part of the Orders Management system. It is built using React, Vite, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## Technologies Involved
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React**: A JavaScript library for building user interfaces.
+- **Vite**: A build tool that provides a faster and leaner development experience for modern web projects.
+- **Tailwind CSS**: A utility-first CSS framework for rapidly building custom user interfaces.
 
-## Expanding the ESLint configuration
+## Live Demo
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+You can view the live demo of the project [here](https://orders-frontend-kappa.vercel.app).
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Getting Started
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+To get started with the project, follow these steps:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Clone the repository:
+  ```sh
+  git clone https://github.com/david-rosval/orders-frontend.git
+  ```
+2. Navigate to the project directory:
+  ```sh
+  cd orders-frontend
+  ```
+3. Install the dependencies:
+  ```sh
+  npm install
+  ```
+4. Start the development server:
+  ```sh
+  npm run dev
+  ```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Project Structure
+
+- `src/`: Contains the source code of the project.
+  - `components/`: Reusable UI components.
+  - `hooks/`: Custom hooks.
+  - `routes/`: Main components rendered in their routes.
+  - `types/`: Types for validation.
+  - `utils/`: Includes the api connection and fetching along with common functions.
+  - `App.tsx`: Main application component.
+  - `config.ts`: Gets the env variables.
+  - `consts.ts`: Sample data used in the mockup phase.
+  - `main.tsx`: Entry point of the application.
+  - `index.html`: Main HTML file.
+
+
