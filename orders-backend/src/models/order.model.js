@@ -118,7 +118,7 @@ export class OrderModel {
     }
   }
 
-  static async update (orderId, newStatus) {
+  static async updateStatus (orderId, newStatus) {
     const connection = await pool.getConnection()
 
     try {
@@ -229,4 +229,48 @@ export class OrderModel {
       connection.release()
     }
   }
+
+  static async updateOrderProducts (orderId, products) {
+    const connection = await pool.getConnection()
+
+    try {
+      await connection.beginTransaction()
+
+      // Delete previous order_products
+      await connection.query('DELETE FROM order_products WHERE order_id = ?', [orderId])
+
+      // insert modified order_products
+      if (products.length > 0) {
+        const orderProductsData = products.map(({ productId, quantity, unitPrice }) => [
+          orderId, productId, quantity, unitPrice
+        ])
+
+        await connection.query(
+          'INSERT INTO order_products (order_id, product_id, quantity, unitPrice) VALUES ?',
+          [orderProductsData]
+        )
+      }
+
+      // calculate new total price
+      const [[{ totalPrice }]] = await connection.query(
+        'SELECT COALESCE(SUM(subtotal), 0) AS totalPrice FROM order_products WHERE order_id = ?',
+        [orderId]
+      )
+
+      // update order total price
+      await connection.query(
+        'UPDATE orders SET totalPrice = ? WHERE id = ?',
+        [totalPrice, orderId]
+      )
+
+      await connection.commit()
+      return { message: 'Order Products successfully updated', orderId, totalPrice }
+    } catch (error) {
+      await connection.rollback()
+      console.error('Error updating Order Products:', error)
+      throw error
+    } finally {
+      connection.release()
+    }
+  };
 }

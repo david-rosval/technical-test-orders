@@ -68,7 +68,6 @@ export type ProductTableRow = {
 }
 
 export type InsertOrderBody = {
-  orderNumber: number,
   products: {
     productId: number
     quantity: number

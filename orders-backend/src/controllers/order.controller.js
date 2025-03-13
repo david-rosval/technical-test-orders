@@ -25,7 +25,7 @@ export class OrderController {
   }
 
   add = async (req, res) => {
-    // { int, { productId: int, quantity: int, unitPrice: int }}
+    // { productId: int, quantity: int, unitPrice: int }}
     const { products } = req.body
     try {
       const orderRegistered = await this.orderModel.add(products)
@@ -36,7 +36,7 @@ export class OrderController {
     }
   }
 
-  update = async (req, res) => {
+  updateStatus = async (req, res) => {
     const { id } = req.params
     const { status } = req.body
     const validStatuses = ['Pending', 'InProgress', 'Completed']
@@ -45,7 +45,7 @@ export class OrderController {
       if (!validStatuses.includes(status)) {
         throw new Error(`Invalid status, it must be one of: ${validStatuses.join(', ')}`)
       }
-      const updateResult = await this.orderModel.update(id, status)
+      const updateResult = await this.orderModel.updateStatus(id, status)
       res.json(updateResult)
     } catch (error) {
       console.log(error.message)
@@ -58,6 +58,19 @@ export class OrderController {
     try {
       const orderDelete = await this.orderModel.delete(id)
       return res.json(orderDelete)
+    } catch (error) {
+      console.log(error.message)
+      return res.status(500).json({ error: error.message })
+    }
+  }
+
+  updateOrderProducts = async (req, res) => {
+    const { id } = req.params
+    const { products } = req.body
+    try {
+      const orderProductsUpdate = await this.orderModel.updateOrderProducts(id, products)
+
+      return res.json(orderProductsUpdate)
     } catch (error) {
       console.log(error.message)
       return res.status(500).json({ error: error.message })

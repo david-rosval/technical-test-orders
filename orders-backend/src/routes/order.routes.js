@@ -9,7 +9,8 @@ export const createOrderRouter = ({ orderModel }) => {
   orderRouter.get('/', orderController.getAll)
   orderRouter.get('/:id', orderController.getById)
   orderRouter.post('/', orderController.add)
-  orderRouter.patch('/:id/status', orderController.update)
+  orderRouter.put('/:id/products', orderController.updateOrderProducts)
+  orderRouter.patch('/:id/status', orderController.updateStatus)
   orderRouter.delete('/:id', orderController.delete)
 
   return orderRouter
