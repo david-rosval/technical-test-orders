@@ -21,6 +21,8 @@ export default function EditOrderProductButton({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
+    // GET FORM VALUES --------------------------
+
     const { elements } = event.currentTarget
 
     
@@ -32,40 +34,40 @@ export default function EditOrderProductButton({
 
     if (!isInputProductId || !isInputQuantity) return
 
-    const productId = parseInt(productIdItem.value)
+    const productIdValue = parseInt(productIdItem.value)
 
-    const quantity = parseInt(quantityItem.value)
+    const quantityValue = parseInt(quantityItem.value)
 
-    const productFound = availableProducts.find(p => p.id === productId)
+    // -------------------------------------------
+
+    const productFound = availableProducts.find(product => product.id === productIdValue)
 
     if (!productFound) return 
 
     const { unitPrice, name } = productFound
 
-    const subTotal = unitPrice * quantity
+    const subTotal = unitPrice * quantityValue
 
-    //const newOrderProduct: OrderProduct = { productId, quantity, unitPrice, subTotal } // to the db
 
     const newProductTableRow: ProductTableRow = {
-      id: orderProduct.id,
-      productId: productId,
+      id: productIdValue,
+      productId: productIdValue,
       name,
       unitPrice,
-      quantity,
+      quantity: quantityValue,
       subTotal,
     }
 
-    const productExisting = orderProducts.find(orderProd => orderProd.id === newProductTableRow.id)
+    const productExisting = orderProducts.find(prod => prod.productId === newProductTableRow.productId)
 
     if (!productExisting) {
-      setOrderProducts(prev => [...(prev.filter(orderProd => orderProd.id !== orderProduct.id)), newProductTableRow])
+      setOrderProducts(prev => [...(prev.filter(orderProd => orderProd.productId !== productFound.id)), newProductTableRow])
     } else {
-      productExisting.quantity = quantity
+      productExisting.quantity = quantityValue
       productExisting.subTotal = subTotal
 
-      setOrderProducts(prev => [...(prev.filter(orderProd => orderProd.id !== productExisting.id)), productExisting])
+      setOrderProducts(prev => [...(prev.filter(orderProd => orderProd.productId !== newProductTableRow.productId)), productExisting])
     }
-
 
     setEditModal(false)
   }

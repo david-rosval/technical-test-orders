@@ -49,8 +49,6 @@ export default function AddNewProductButton({
 
     const subTotal = unitPrice * quantityValue
 
-    //const newOrderProduct: OrderProduct = { productId, quantity, unitPrice, subTotal } // to the db
-
     const newProductTableRow: ProductTableRow = {
       id: productIdValue,
       productId: productIdValue,
