@@ -1,18 +1,18 @@
 # Order Management System
 
 This project is a technical test about an Order Management System built with React and Express.
+To see the project in action, visit the [site](https://orders-frontend-kappa.vercel.app/).
 
-## Table of Contents
+## Links
 
-- [Order Management System](#order-management-system)
-- [Table of Contents](#table-of-contents)
-- [Introduction](#introduction)
-- [Technologies](#technologies)
-- [Installation](#installation)
+- [Visit site](https://orders-frontend-kappa.vercel.app/)
+- Dedicated Repositories:
+  - [Frontend](https://github.com/david-rosval/orders-frontend.git)
+  - [Backend](https://github.com/david-rosval/orders-backend.git)
 
 ## Introduction
 
-The Order Management System is a web application designed to manage customer orders efficiently. It provides functionalities to create, update, delete, and view orders.
+The Order Management System is a web application designed to manage customer orders efficiently. It provides functionalities to create, update, delete, and view orders products.
 
 ## Technologies
 
