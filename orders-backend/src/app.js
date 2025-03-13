@@ -1,5 +1,5 @@
 import express from 'express'
-import cors from "cors"
+import cors from 'cors'
 import { createProductRouter } from './routes/product.routes.js'
 import { ProductModel } from './models/product.model.js'
 import { createOrderRouter } from './routes/order.routes.js'

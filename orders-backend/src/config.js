@@ -9,7 +9,6 @@ const {
   PORT
 } = process.env
 
-
 export {
   DB_HOST,
   DB_MYSQL_PORT,
