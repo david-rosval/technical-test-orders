@@ -5,7 +5,7 @@ import useOrders from "../hooks/useOrders";
 import { formatDate } from "../utils";
 
 export default function MyOrders() {
-  const { orders } = useOrders()
+  const { orders, setOrders } = useOrders()
 
   const ordersRows = orders.map(order => {
     return {
@@ -17,6 +17,19 @@ export default function MyOrders() {
       status: order.orderInfo.status
     } 
   })
+
+  const deleteOrder = async (orderId: number) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${orderId}`, { method: "DELETE" })
+      const result = await response.json()
+      console.log(result)
+      
+      setOrders(prev => prev.filter(order => order.orderInfo.id !== orderId))
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div>
@@ -46,8 +59,8 @@ export default function MyOrders() {
                   {order.status !== "Completed" && (
                     <Link className="edit-button" to={`/add-order/${order.id}`}>Edit</Link>
                   )}
-                  <DeleteButton confirmationText="Do you want to delete this order?" onConfirm={() => console.log("delete order")} />
-                  <ChangeStatus order={order} />
+                  <DeleteButton confirmationText="Do you want to delete this order?" onConfirm={() => deleteOrder(order.id)} />
+                  <ChangeStatus order={order}/>
                 </div>
               </td>
             </tr>

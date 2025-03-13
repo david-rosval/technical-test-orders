@@ -55,27 +55,35 @@ export default function AddEditOrder() {
 
     if (!id) {
       // Add Order
-      console.log("add new order")
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", },
-        body: JSON.stringify(newOrder)
-      })
-      const result = await response.json()
-      console.log(result)
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", },
+          body: JSON.stringify(newOrder)
+        })
+        const result = await response.json()
+        console.log(result)
+        navigate("/my-orders")
+      } catch (error) {
+        console.log(error)
+      }
     } else {
       // editOrder
       console.log("edit order")
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}/products`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json", },
-        body: JSON.stringify(newOrder)
-      })
-      const result = await response.json()
-      console.log(result)
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}/products`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", },
+          body: JSON.stringify(newOrder)
+        })
+        const result = await response.json()
+        console.log(result)
+        navigate("/my-orders")
+      } catch (error) {
+        console.log(error)
+      }
     }
 
-    navigate("/my-orders")
   }
   
   return (

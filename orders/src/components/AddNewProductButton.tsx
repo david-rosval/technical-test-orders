@@ -60,7 +60,6 @@ export default function AddNewProductButton({
 
     const productExisting = orderProducts.find(prod => prod.productId === newProductTableRow.productId)
 
-    console.log(productExisting)
 
     if (!productExisting) {
       setOrderProducts(prev => [...(prev.filter(prod => prod.productId !== productFound.id)), newProductTableRow])
@@ -76,7 +75,6 @@ export default function AddNewProductButton({
 
 
     setProductsModal(false)
-    console.log(orderProducts)
   }
 
   return (

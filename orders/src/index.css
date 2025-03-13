@@ -13,6 +13,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.back-button {
+  display: flex;
+  align-items: center;
+}
+
 .table tbody tr td div {
   display: flex;
   gap: 4px;
