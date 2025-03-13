@@ -60,7 +60,8 @@ export type OrderRow = {
 }
 
 export type ProductTableRow = {
-  id: number // Auto
+  id?: number // Auto
+  productId?: number
   name: string
   unitPrice: number
   quantity: number

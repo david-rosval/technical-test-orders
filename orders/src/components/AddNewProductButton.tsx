@@ -1,21 +1,18 @@
-import { useEffect, useState } from "react"
-import { Product, ProductTableRow } from "../types"
-import { getProducts } from "../utils/api"
+
+import { useState } from "react"
+import useProducts from "../hooks/useProducts"
+import { ProductTableRow } from "../types"
 
 export default function AddNewProductButton({
-  setProducts,
-  products
+  setOrderProducts,
+  orderProducts
 }: {
-  setProducts: React.Dispatch<React.SetStateAction<ProductTableRow[]>>
-  products: ProductTableRow[]
+  setOrderProducts: React.Dispatch<React.SetStateAction<ProductTableRow[]>>
+  orderProducts: ProductTableRow[]
 }) {
   const [productsModal, setProductsModal] = useState(false)
-  const [availableProducts, setAvailableProducts] = useState<Product[]>([])
+  const { products: availableProducts, loading, error } = useProducts()
 
-  useEffect(() => {
-    const obtainedProducts = getProducts()
-    setAvailableProducts(obtainedProducts)
-  }, [])
   
 
   const toggleModal = () => {
@@ -24,6 +21,8 @@ export default function AddNewProductButton({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    // GET FORM VALUES --------------------------
 
     const { elements } = event.currentTarget
 
@@ -36,44 +35,50 @@ export default function AddNewProductButton({
 
     if (!isInputProductId || !isInputQuantity) return
 
-    const productId = parseInt(productIdItem.value)
+    const productIdValue = parseInt(productIdItem.value)
 
-    const quantity = parseInt(quantityItem.value)
+    const quantityValue = parseInt(quantityItem.value)
 
-    const product = availableProducts.find(product => product.id === productId)
+    // -------------------------------------------
 
-    if (!product) return 
+    const productFound = availableProducts.find(product => product.id === productIdValue)
 
-    const { unitPrice, name } = product
+    if (!productFound) return 
 
-    const subTotal = unitPrice * quantity
+    const { unitPrice, name } = productFound
+
+    const subTotal = unitPrice * quantityValue
 
     //const newOrderProduct: OrderProduct = { productId, quantity, unitPrice, subTotal } // to the db
 
     const newProductTableRow: ProductTableRow = {
-      id: productId,
+      id: productIdValue,
+      productId: productIdValue,
       name,
       unitPrice,
-      quantity,
+      quantity: quantityValue,
       subTotal,
     }
 
-    const productExisting = products.find(prod => prod.id === newProductTableRow.id)
+    const productExisting = orderProducts.find(prod => prod.productId === newProductTableRow.productId)
+
+    console.log(productExisting)
 
     if (!productExisting) {
-      setProducts(prev => [...(prev.filter(prod => prod.id !== product.id)), newProductTableRow])
+      setOrderProducts(prev => [...(prev.filter(prod => prod.productId !== productFound.id)), newProductTableRow])
     } else {
-      productExisting.quantity += quantity
-      productExisting.subTotal += subTotal
+      const prevQty = Number(productExisting.quantity)
+      const prevSubtotal = Number(productExisting.subTotal)
 
-      setProducts(prev => [...(prev.filter(prod => prod.id !== newProductTableRow.id)), productExisting])
+      productExisting.quantity = quantityValue + prevQty
+      productExisting.subTotal = subTotal + prevSubtotal
+
+      setOrderProducts(prev => [...(prev.filter(prod => prod.productId !== newProductTableRow.productId)), productExisting])
     }
 
-    
-    // pass the state
-    //console.log(newOrderProduct)
 
     setProductsModal(false)
+    console.log(orderProducts)
   }
 
   return (
@@ -84,12 +89,19 @@ export default function AddNewProductButton({
           <form action="post" onSubmit={handleSubmit} >
             <div>
               <label htmlFor="productId">Product: </label>
-              <select name="productId" id="productId">
-                <option value="">--Please choose an option--</option>
-                {availableProducts.map((p) => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
-                ))}
-              </select>
+              {!error ? (
+                <select name="productId" id="productId">
+                  <option value="">--Please choose an option--</option>
+                  {loading && (
+                    <option value="" disabled>--Loading products--</option>
+                  )}
+                  {availableProducts && availableProducts.length > 0 && availableProducts.map((p) => (
+                    <option key={p.id} value={p.id}>{p.name}</option>
+                  ))}
+                </select>
+              ) : (
+                <p>Products not found</p>
+              )}
             </div>
             <div>
               <label htmlFor="quantity">Quantity: </label>

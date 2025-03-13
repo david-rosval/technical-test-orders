@@ -3,7 +3,9 @@ import { Product } from "../types"
 
 export type ProductsContextType = {
   products: Product[],
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>
+  setProducts: React.Dispatch<React.SetStateAction<Product[]>>,
+  loading: boolean,
+  error: string | null
 }
 
 export const ProductsContext = createContext<ProductsContextType | undefined>(undefined)

@@ -1,16 +1,19 @@
 import { useState } from "react"
 import { ProductTableRow } from "../types"
-import { SAMPLE_PRODUCTS } from "../consts"
+import useProducts from "../hooks/useProducts"
 
 export default function EditOrderProductButton({
-  product,
-  setProducts,
-  products
+  orderProduct,
+  orderProducts,
+  setOrderProducts,
 }: {
-  product: ProductTableRow
-  setProducts: React.Dispatch<React.SetStateAction<ProductTableRow[]>>
-  products: ProductTableRow[]
+  orderProduct: ProductTableRow
+  orderProducts: ProductTableRow[]
+  setOrderProducts: React.Dispatch<React.SetStateAction<ProductTableRow[]>>
 }) {
+
+
+  const { products: availableProducts } = useProducts()
   const [editModal, setEditModal] = useState(false)
   
   const toggleModal = () => setEditModal(prev => !prev)
@@ -33,7 +36,7 @@ export default function EditOrderProductButton({
 
     const quantity = parseInt(quantityItem.value)
 
-    const productFound = SAMPLE_PRODUCTS.find(p => p.id === productId)
+    const productFound = availableProducts.find(p => p.id === productId)
 
     if (!productFound) return 
 
@@ -44,22 +47,23 @@ export default function EditOrderProductButton({
     //const newOrderProduct: OrderProduct = { productId, quantity, unitPrice, subTotal } // to the db
 
     const newProductTableRow: ProductTableRow = {
-      id: productId,
+      id: orderProduct.id,
+      productId: productId,
       name,
       unitPrice,
       quantity,
       subTotal,
     }
 
-    const productExisting = products.find(prod => prod.id === newProductTableRow.id)
+    const productExisting = orderProducts.find(orderProd => orderProd.id === newProductTableRow.id)
 
     if (!productExisting) {
-      setProducts(prev => [...(prev.filter(prod => prod.id !== product.id)), newProductTableRow])
+      setOrderProducts(prev => [...(prev.filter(orderProd => orderProd.id !== orderProduct.id)), newProductTableRow])
     } else {
       productExisting.quantity = quantity
       productExisting.subTotal = subTotal
 
-      setProducts(prev => [...(prev.filter(prod => prod.id !== productExisting.id)), productExisting])
+      setOrderProducts(prev => [...(prev.filter(orderProd => orderProd.id !== productExisting.id)), productExisting])
     }
 
 
@@ -74,16 +78,16 @@ export default function EditOrderProductButton({
           <form action="post" onSubmit={handleSubmit} >
             <div>
               <label htmlFor="productIdEdited">Product: </label>
-              <select name="productIdedited" id="productIdEdited" defaultValue={product.id}>
+              <select name="productIdedited" id="productIdEdited" defaultValue={orderProduct.productId}>
                 <option value="">--Please choose an option--</option>
-                {SAMPLE_PRODUCTS.map((p) => (
+                {availableProducts.map((p) => (
                   <option key={p.id} value={p.id}>{p.name}</option>
                 ))}
               </select>
             </div>
             <div>
               <label htmlFor="quantityEdited">Quantity: </label>
-              <input type="number" name="quantityEdited" min={1} defaultValue={product.quantity} />
+              <input type="number" name="quantityEdited" min={1} defaultValue={orderProduct.quantity} />
             </div>
             <button type="submit">Confirm & Save</button>
           </form>

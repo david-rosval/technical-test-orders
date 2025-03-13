@@ -13,6 +13,7 @@ export class OrderModel {
       const [orderProducts] = await connection.query(`
             SELECT 
               op.order_id, 
+              op.product_id AS productId,
               op.id, 
               p.name, 
               op.unitPrice, 
@@ -42,6 +43,7 @@ export class OrderModel {
         if (ordersMap.has(product.order_id)) {
           ordersMap.get(product.order_id).orderProducts.push({
             id: product.id,
+            productId: product.productId,
             name: product.name,
             unitPrice: product.unitPrice,
             quantity: product.quantity,
@@ -81,6 +83,7 @@ export class OrderModel {
       const [orderProductsRows] = await connection.query(
         `SELECT 
             op.id, 
+            op.product_id AS productId,
             p.name, 
             op.unitPrice, 
             op.quantity, 
@@ -102,6 +105,7 @@ export class OrderModel {
         },
         orderProducts: orderProductsRows.map(product => ({
           id: product.id,
+          productId: product.productId,
           name: product.name,
           unitPrice: product.unitPrice,
           quantity: product.quantity,
@@ -144,15 +148,24 @@ export class OrderModel {
     const connection = await pool.getConnection()
 
     try {
-      // today's orders count
-      const [rows] = await connection.query(`
-            SELECT COUNT(*) AS count FROM orders 
-            WHERE DATE(date) = CURDATE()
-        `)
+      // YYYYMMDD format date
+      const today = new Date().toISOString().slice(0, 10).replace(/-/g, '')
 
-      const count = rows[0].count + 1
-      const today = new Date().toISOString().slice(0, 10).replace(/-/g, '') // YYYYMMDD format
-      return `${today}${count.toString().padStart(3, '0')}`
+      // last orderNumber
+      const [rows] = await connection.query(
+        'SELECT MAX(orderNumber) AS lastOrder FROM orders WHERE orderNumber LIKE ?',
+        [`${today}%`]
+      )
+
+      let newOrderNumber
+      if (!rows[0].lastOrder) {
+        newOrderNumber = `${today}001`
+      } else {
+        const lastNumber = parseInt(rows[0].lastOrder.slice(-3)) + 1
+        newOrderNumber = `${today}${lastNumber.toString().padStart(3, '0')}`
+      }
+
+      return newOrderNumber
     } catch (error) {
       console.error('Error generating orderNumber:', error)
       throw error
@@ -164,11 +177,11 @@ export class OrderModel {
   static async add (products) {
     const connection = await pool.getConnection()
     try {
-      const nreOrderNumber = await this.generateOrderNumberWithDate()
+      const newOrderNumber = await this.generateOrderNumberWithDate()
       // Insert new order
       const [orderResult] = await connection.query(
         'INSERT INTO orders (orderNumber) VALUES (?)',
-        [nreOrderNumber]
+        [newOrderNumber]
       )
       const orderId = orderResult.insertId // get the id
 

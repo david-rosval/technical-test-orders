@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import DeleteButton from "../components/DeleteButton";
 import ChangeStatus from "../components/ChangeStatus";
 import useOrders from "../hooks/useOrders";
+import { formatDate } from "../utils";
 
 export default function MyOrders() {
   const { orders } = useOrders()
@@ -10,7 +11,7 @@ export default function MyOrders() {
     return {
       id: order.orderInfo.id,
       orderNumber: order.orderInfo.orderNumber,
-      date: order.orderInfo.date,
+      date: formatDate(order.orderInfo.date),
       productsQty: order.orderProducts.length,
       finalPrice: order.orderInfo.finalPrice,
       status: order.orderInfo.status
