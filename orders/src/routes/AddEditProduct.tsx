@@ -10,6 +10,7 @@ export default function AddEditProduct() {
   const [error, setError] = useState<string | null>(null)
   const [name, setName] = useState<string>("")
   const [unitPrice, setUnitPrice] = useState<number>(0)
+  const [emptyError, setEmptyError] = useState<string>("")
 
   useEffect(() => {
     async function getOrderById() {
@@ -35,6 +36,8 @@ export default function AddEditProduct() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    
+    setEmptyError("")
 
     // GET FORM VALUES --------------------------
 
@@ -49,9 +52,14 @@ export default function AddEditProduct() {
 
     if (!isInputName || !isInputUnitPrice) return
 
-    const nameValue = nameItem.value
+    const nameValue = nameItem.value.trim()
 
     const unitPriceValue = Number(unitPriceItem.value)
+
+    if (!nameValue || !unitPriceValue) {
+      setEmptyError("Every input is required")
+      return
+    }
 
     // -------------------------------------------
 
@@ -98,7 +106,9 @@ export default function AddEditProduct() {
             )}
           </div>
           <div>
+
             <button className="p-4 rounded-lg shadow-lg transition-colors duration-200 ease-in-out inline-block bg-green-400  dark:bg-green-600  hover:bg-green-500/80 dark:hover:bg-green-600/80 font-semibold w-fit mt-5 cursor-pointer" disabled={loading ? true : false} type="submit">Save & {id ? "Edit" : "Create"} Product</button>
+            <p className="text-red-500">{emptyError}</p>
           </div>
         </form>
       ): (

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ProductTableRow } from "../types"
 import useProducts from "../hooks/useProducts"
 
@@ -15,6 +15,22 @@ export default function EditOrderProductButton({
 
   const { products: availableProducts } = useProducts()
   const [editModal, setEditModal] = useState(false)
+
+  const editOrderProductRef = useRef<HTMLFormElement>(null)
+  
+  useEffect(() => {
+    const closeModal = (e: MouseEvent) => {
+      if (editModal && editOrderProductRef.current && !editOrderProductRef.current.contains(e.target as Node)) {
+        setEditModal(false)
+      }
+    }
+    
+    document.addEventListener("mousedown", closeModal)
+    return () => {
+      document.removeEventListener("mousedown", closeModal)
+    }
+  }, [editModal])
+  
   
   const toggleModal = () => setEditModal(prev => !prev)
 
@@ -76,8 +92,8 @@ export default function EditOrderProductButton({
     <>
       <button className="rounded bg-blue-300 dark:bg-blue-500 px-3 py-2 cursor-pointer" onClick={toggleModal}>Edit</button>
       {editModal && (
-        <div className="fixed inset-0 bg-neutral-900/40 grid place-items-center">
-          <form className="bg-slate-100 dark:bg-neutral-700 p-5 rounded-lg shadow-lg flex flex-col gap-3" action="post" onSubmit={handleSubmit} >
+        <div  className="fixed inset-0 bg-neutral-900/40 grid place-items-center">
+          <form ref={editOrderProductRef} className="bg-slate-100 dark:bg-neutral-700 p-5 rounded-lg shadow-lg flex flex-col gap-3" action="post" onSubmit={handleSubmit} >
             <h3 className="text-xl font-semibold">Edit Order Product</h3>
             <div className="flex items-center justify-between gap-4">
               <label  htmlFor="productIdEdited">Product: </label>

@@ -16,6 +16,7 @@ export default function AddEditOrder() {
   const [orderToEdit, setOrderToEdit] = useState<OrderToEdit>()
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
+  const [emptyError, setEmptyError] = useState<string>("")
 
   useEffect(() => {
     async function getOrderById() {
@@ -42,6 +43,11 @@ export default function AddEditOrder() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    if (!orderProducts.length) {
+      setEmptyError(`Select products for the order before ${id ? "updating" : "creating"} it`)
+      return
+    }
 
     const newOrderProducts: InsertOrderBody = {
       products: orderProducts.map(orderProduct => {
@@ -85,6 +91,7 @@ export default function AddEditOrder() {
             <h2 className="text-2xl md:text-3xl font-semibold mb-10">Order #{orderToEdit?.orderNumber ?? "..."}</h2>
             <button className="p-4 rounded-lg shadow-lg transition-colors duration-200 ease-in-out inline-block bg-green-400  dark:bg-green-600  hover:bg-green-500/80 dark:hover:bg-green-600/80 font-semibold" type="submit">Save & {id ? "Edit Order" : "Create Order"}</button>
           </div>
+          
           <div className="w-[700px] flex justify-between">
             <label className="font-semibold" htmlFor="date">Date: </label>
             <input className="text-lg text-right w-fit" type="text" name="date" disabled value={!orderToEdit ? todaysDate() : formatDate(orderToEdit.date)} />
@@ -98,8 +105,10 @@ export default function AddEditOrder() {
             <input className="text-lg text-right w-fit" disabled name="finalPrice" value={orderProducts.reduce((acc, orderProduct) => acc + Number(orderProduct.subTotal), 0)}/>
           </div>
         </form>
-
-          <AddNewProductButton setOrderProducts={setOrderProducts} orderProducts={orderProducts} /> {/* PRODUCTS FETCHED FROM THE API */}
+        {emptyError && (
+            <p className="text-red-500">{emptyError}</p>
+          )}
+        <AddNewProductButton setOrderProducts={setOrderProducts} orderProducts={orderProducts} /> {/* PRODUCTS FETCHED FROM THE API */}
 
         <section>
           {!error 
