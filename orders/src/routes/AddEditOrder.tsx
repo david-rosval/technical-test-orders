@@ -6,6 +6,7 @@ import EditOrderProductButton from "../components/EditOrderProductButton";
 import ProductsProvider from "../components/providers/ProductsProvider";
 import { InsertOrderBody, OrderToEdit, ProductTableRow } from "../types";
 import { formatDate, todaysDate } from "../utils";
+import { createOrder, getOrder, updateOrderProducts } from "../utils/api";
 
 
 export default function AddEditOrder() {
@@ -20,8 +21,7 @@ export default function AddEditOrder() {
     async function getOrderById() {
       setLoading(true)
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}`)
-        const result = await response.json()
+        const result = await getOrder(id)
 
         setOrderToEdit(result.orderInfo)
         setOrderProducts(result.orderProducts)
@@ -43,7 +43,7 @@ export default function AddEditOrder() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const newOrder: InsertOrderBody = {
+    const newOrderProducts: InsertOrderBody = {
       products: orderProducts.map(orderProduct => {
         return {
           productId: orderProduct.productId as number,
@@ -56,12 +56,7 @@ export default function AddEditOrder() {
     if (!id) {
       // Add Order
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", },
-          body: JSON.stringify(newOrder)
-        })
-        const result = await response.json()
+        const result = await createOrder(newOrderProducts)
         console.log(result)
         navigate("/my-orders")
       } catch (error) {
@@ -71,12 +66,7 @@ export default function AddEditOrder() {
       // editOrder
       console.log("edit order")
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}/products`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json", },
-          body: JSON.stringify(newOrder)
-        })
-        const result = await response.json()
+        const result = await updateOrderProducts(id, newOrderProducts)
         console.log(result)
         navigate("/my-orders")
       } catch (error) {
@@ -100,11 +90,11 @@ export default function AddEditOrder() {
             <input type="text" name="date" disabled value={!orderToEdit ? todaysDate() : formatDate(orderToEdit.date)} />
           </div>
           <div>
-            <label htmlFor="productsQty">Products: </label>
+            <label htmlFor="productsQty">Products count: </label>
             <input type="number" name="productsQty" disabled value={orderProducts.reduce((acc, orderProduct) => acc + orderProduct.quantity, 0)} />
           </div>
           <div> 
-            <label htmlFor="finalPrice">Final Price: </label>
+            <label htmlFor="finalPrice">Final Price {"($)"}: </label>
             <input disabled name="finalPrice" value={orderProducts.reduce((acc, orderProduct) => acc + Number(orderProduct.subTotal), 0)}/>
           </div>
         </form>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { OrdersContext } from '../../hooks/useOrders'
 import { FetchedOrder } from '../../types'
+import { getOrders } from '../../utils/api'
 
 export default function OrdersProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<FetchedOrder[]>([])
@@ -11,8 +12,7 @@ export default function OrdersProvider({ children }: { children: React.ReactNode
     async function getAllOrders() {
       setLoading(true)
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`)
-        const result = await response.json()
+        const result = await getOrders()
 
         setOrders(result)
         setLoading(false)

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Product } from '../../types'
 import { ProductsContext } from '../../hooks/useProducts'
+import { getProducts } from '../../utils/api'
 
 export default function ProductsProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>([])
@@ -12,8 +13,7 @@ export default function ProductsProvider({ children }: { children: React.ReactNo
     async function getAllProducts() {
       setLoading(true)
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`)
-        const result = await response.json()
+        const result = await getProducts()
 
         setProducts(result)
         setLoading(false)

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Status, UpdateOrderStatusBody } from "../types";
 import useOrders from "../hooks/useOrders";
+import { updateOrderStatus } from "../utils/api";
 
 export default function ChangeStatus({
   order
@@ -26,12 +27,8 @@ export default function ChangeStatus({
     setLoading(true)
     
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${order.id}/status`, {
-        method: "PATCH", 
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(patchStatus)
-      })
-      const result = await response.json()
+      
+      const result = await updateOrderStatus(order.id, patchStatus)
       console.log(result)
 
       // optimistic
@@ -72,6 +69,9 @@ export default function ChangeStatus({
       <p style={{
         display: !error ? "none" : "block" 
       }}>{error}</p>
+      <p style={{
+        display: !loading ? "none" : "block" 
+      }}>loading status...</p>
     </div>
   )
 }

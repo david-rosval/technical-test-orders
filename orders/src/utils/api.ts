@@ -1,45 +1,113 @@
-import { SAMPLE_ORDER, SAMPLE_ORDERS, SAMPLE_PRODUCTS } from "../consts";
-import { Order, OrderProduct } from "../types";
+import { InsertOrderBody, UpdateOrderStatusBody } from "../types";
 
-export function newOrderNumber() {
-  return SAMPLE_ORDERS.length + 1
+
+
+export async function getOrders() {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`)
+    const result = await response.json()
+
+    return result
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message)
+    }
+  }
 }
 
-export function createOrder({ 
-  order, 
-  orderProducts 
-}: { 
-  order: Order, 
-  orderProducts: OrderProduct[] 
-}) {
-  console.log("order", order)
-  console.log("orderProducts", orderProducts)
+export async function getProducts() {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`)
+    const result = await response.json()
+
+    return result
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message)
+    }
+  }
 }
 
-export function updateOrder({ 
-  order, 
-  orderProducts 
-}: { 
-  order: Order, 
-  orderProducts: OrderProduct[] 
-}) {
-  console.log("order id to edit", order.id)
-  console.log("orderProducts", orderProducts)
+export async function createOrder(orderProducts: InsertOrderBody) {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", },
+      body: JSON.stringify(orderProducts)
+    })
+    const result = await response.json()
+    return result
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message)
+    }
+  }
 }
 
-export function updateOrderStatus(orderId: number, newStatus: "Pending" | "InProgress" | "Completed"){
-  console.log(`Updating the status to ${newStatus} of the order with id: ${orderId}`)
+export async function updateOrderProducts(orderId: string | undefined, orderProducts: InsertOrderBody) {
+  console.log(`Updating producst of order with id ${orderId}`)
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${orderId}/products`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", },
+      body: JSON.stringify(orderProducts)
+    })
+    const result = await response.json()
+    return result
+    
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message)
+    }
+  }
+  
 }
 
-export function getOrder(id: number) {
+export async function updateOrderStatus(orderId: number, patchStatus: UpdateOrderStatusBody){
+  console.log(`Updating the status to ${patchStatus} of the order with id: ${orderId}`)
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${orderId}/status`, {
+      method: "PATCH", 
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(patchStatus)
+    })
+    const result = await response.json()
+    return result
+    
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message)
+    }
+  }
+}
+
+export async function getOrder(id: string | undefined) {
   console.log(`obtaninig order with id: ${id}`)
-  return SAMPLE_ORDER
+
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}`)
+    const result = await response.json()
+    return result
+    
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message)
+    }
+  }
 }
 
-export function getProducts() {
-  return SAMPLE_PRODUCTS
-}
 
-export function getOrders() {
-  return SAMPLE_ORDERS
+
+
+export async function deleteOrder(orderId: number) {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${orderId}`, { method: "DELETE" })
+    const result = await response.json()
+    return result
+    
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message)
+    }
+  }
 }
