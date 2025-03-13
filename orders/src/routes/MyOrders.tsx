@@ -5,6 +5,7 @@ import useOrders from "../hooks/useOrders";
 import { formatDate } from "../utils";
 import { deleteOrder } from "../utils/orders.api";
 import { ArrowLeft } from "lucide-react";
+import LoaderComponent from "../components/LoaderComponent";
 
 export default function MyOrders() {
   const { orders, setOrders, loading } = useOrders()
@@ -40,18 +41,19 @@ export default function MyOrders() {
       {!loading ? !ordersRows.length ? (
         <p>Add Orders to display</p>
       ) : (
+        <div className="overflow-x-auto">
         <table className="table-auto block mt-5 border-collapse">
-          <thead className="h-12 bg-neutral-200 dark:bg-neutral-900 ">
+          <thead className="h-12 bg-neutral-200 dark:bg-neutral-900 text-base">
             <tr>
-              <th className="w-10 px-5">Id</th>
-              <th className="w-36 px-5">Order #</th>
-              <th className="w-36 px-5">Date</th>
-              <th className="w-36 px-5"># Products</th>
-              <th className="w-36 px-5">Final Price {"($)"}</th>
+              <th className="min-w-10 px-5">Id</th>
+              <th className="min-w-32 px-5">Order #</th>
+              <th className="min-w-32 px-5">Date</th>
+              <th className="min-w-40 px-5"># Products</th>
+              <th className="min-w-36 px-5">Final Price {"($)"}</th>
               <th className="w-fit px-5">Options</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-sm">
             {ordersRows.sort((a,b) => a.id - b.id).map((order) => (
               <tr key={order.id} className="bg-neutral-100 dark:bg-neutral-800 h-20 border-y border-neutral-100 dark:border-neutral-600">
                 <td className="px-5 text-center">{order.id}</td>
@@ -72,7 +74,14 @@ export default function MyOrders() {
             ))}
           </tbody>
         </table>
-      ) : <p>Loading orders...</p>}
+        </div>
+
+      ) : (
+        <div className="w-full grid mt-10 place-items-center">
+          <LoaderComponent text={"Loading Orders"} />
+        </div>
+      )}
+        
       
     </div>
   )

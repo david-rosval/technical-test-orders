@@ -95,7 +95,7 @@ export default function AddNewProductButton({
 
   return (
     <>
-      <button className="p-4 rounded-lg shadow-lg transition-colors duration-200 ease-in-out inline-block bg-neutral-400  dark:bg-neutral-700  hover:bg-neutral-400/80 dark:hover:bg-neutral-700/80 w-[700px] my-4" type="button" onClick={toggleModal}>+ New Product</button>
+      <button className="p-4 rounded-lg shadow-lg transition-colors duration-200 ease-in-out inline-block bg-neutral-400  dark:bg-neutral-700  hover:bg-neutral-400/80 dark:hover:bg-neutral-700/80 my-4" type="button" onClick={toggleModal}>+ New Product</button>
       {productsModal && (
         <div className="fixed inset-0 bg-neutral-900/40 grid place-items-center">
           <form ref={addOrderProductRef} action="post" onSubmit={handleSubmit} className="bg-slate-100 dark:bg-neutral-700 p-5 rounded-lg shadow-lg flex flex-col gap-3" >

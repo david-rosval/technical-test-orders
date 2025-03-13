@@ -12,8 +12,8 @@ import Products from './routes/Products.tsx'
 import AddEditProduct from './routes/AddEditProduct.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <BrowserRouter>
+  <BrowserRouter>
+    <StrictMode>
       <Routes>
         <Route index element={<App />} />
 
@@ -30,9 +30,7 @@ createRoot(document.getElementById('root')!).render(
           <Route index element={<AddEditProduct />} />
           <Route path=":id" element={<AddEditProduct />} />
         </Route>
-
-     
       </Routes>
-    </BrowserRouter>
-  </StrictMode>,
+    </StrictMode>
+  </BrowserRouter>
 )
