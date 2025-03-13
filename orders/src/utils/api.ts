@@ -1,8 +1,8 @@
-import { SAMPLE_ORDER, SAMPLE_ORDERS, SAMPLE_PRODUCTS, SAMPLE_ROWS } from "../consts";
+import { SAMPLE_ORDER, SAMPLE_ORDERS, SAMPLE_PRODUCTS } from "../consts";
 import { Order, OrderProduct } from "../types";
 
 export function newOrderNumber() {
-  return SAMPLE_ROWS.length + 1
+  return SAMPLE_ORDERS.length + 1
 }
 
 export function createOrder({ 
@@ -25,6 +25,10 @@ export function updateOrder({
 }) {
   console.log("order id to edit", order.id)
   console.log("orderProducts", orderProducts)
+}
+
+export function updateOrderStatus(orderId: number, newStatus: "Pending" | "InProgress" | "Completed"){
+  console.log(`Updating the status to ${newStatus} of the order with id: ${orderId}`)
 }
 
 export function getOrder(id: number) {

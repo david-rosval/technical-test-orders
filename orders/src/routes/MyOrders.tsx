@@ -1,32 +1,27 @@
 import { Link } from "react-router";
 import DeleteButton from "../components/DeleteButton";
-import { useEffect, useState } from "react";
-import { getOrders } from "../utils/api";
-import { OrderRow } from "../types";
+import ChangeStatus from "../components/ChangeStatus";
+import useOrders from "../hooks/useOrders";
 
 export default function MyOrders() {
-  const [ordersRows, setOrdersRows] = useState<OrderRow[]>([])
+  const { orders } = useOrders()
 
-  useEffect(() => {
-    const orders = getOrders()
-    const ordersFormatted = orders.map(order => {
-      return {
-        id: order.orderInfo.id,
-        orderNumber: order.orderInfo.orderNumber,
-        date: order.orderInfo.date,
-        productsQty: order.orderProducts.length,
-        finalPrice: order.orderInfo.finalPrice,
-      } 
-    })
-    setOrdersRows(ordersFormatted)
-  }, [])
-  
+  const ordersRows = orders.map(order => {
+    return {
+      id: order.orderInfo.id,
+      orderNumber: order.orderInfo.orderNumber,
+      date: order.orderInfo.date,
+      productsQty: order.orderProducts.length,
+      finalPrice: order.orderInfo.finalPrice,
+      status: order.orderInfo.status
+    } 
+  })
 
   return (
     <div>
       <h1>My Orders</h1>
       <Link to="/add-order">+ New Order</Link>
-      <table>
+      <table className="table">
         <thead>
           <tr>
             <th>Id</th>
@@ -47,8 +42,11 @@ export default function MyOrders() {
               <td>{order.finalPrice}</td>
               <td>
                 <div>
-                  <Link to={`/add-order/${order.id}`}>Edit</Link>
+                  {order.status !== "Completed" && (
+                    <Link className="edit-button" to={`/add-order/${order.id}`}>Edit</Link>
+                  )}
                   <DeleteButton confirmationText="Do you want to delete this order?" onConfirm={() => console.log("delete order")} />
+                  <ChangeStatus order={order} />
                 </div>
               </td>
             </tr>

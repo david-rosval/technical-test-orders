@@ -13,6 +13,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.table tbody tr td div {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -33,7 +39,11 @@ h1 {
   line-height: 1.1;
 }
 
-button {
+.delete-button {
+  color:red
+}
+
+button, .edit-button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -44,11 +54,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
+button:hover, .edit-button:hover {
   border-color: #646cff;
 }
-button:focus,
-button:focus-visible {
+button:focus, .edit-button:focus,
+button:focus-visible, .edit-button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 

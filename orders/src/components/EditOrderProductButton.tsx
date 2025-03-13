@@ -68,7 +68,7 @@ export default function EditOrderProductButton({
 
   return (
     <>
-      <button onClick={toggleModal}>Edit</button>
+      <button className="edit-button" onClick={toggleModal}>Edit</button>
       {editModal && (
         <div>
           <form action="post" onSubmit={handleSubmit} >

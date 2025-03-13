@@ -1,44 +1,7 @@
-import { Product } from "./types"
+import { FetchedOrder, Product } from "./types"
 
-export const SAMPLE_ROWS = [
-  {
-    id: 1,
-    orderNumber: 1,
-    date: "2025-03-12",
-    productsQty: 3,
-    finalPrice: 100
-  },
-  {
-    id: 2,
-    orderNumber: 2,
-    date: "2025-03-13",
-    productsQty: 5,
-    finalPrice: 200
-  },
-  {
-    id: 3,
-    orderNumber: 3,
-    date: "2025-03-14",
-    productsQty: 2,
-    finalPrice: 150
-  },
-  {
-    id: 4,
-    orderNumber: 4,
-    date: "2025-03-15",
-    productsQty: 4,
-    finalPrice: 250
-  },
-  {
-    id: 5,
-    orderNumber: 5,
-    date: "2025-03-16",
-    productsQty: 1,
-    finalPrice: 50
-  }
-]
 
-export const SAMPLE_ORDER = {
+export const SAMPLE_ORDER: FetchedOrder = {
   orderInfo: {
     id: 4 ,
     date: "2025-03-18",
@@ -63,13 +26,14 @@ export const SAMPLE_ORDER = {
   ]
 }
   
-export const SAMPLE_ORDERS = [
+export const SAMPLE_ORDERS: FetchedOrder[] = [
   {
     orderInfo: {
       id: 1,
       date: "2025-03-12",
       orderNumber: 1,
       finalPrice: 130,
+      status: "InProgress",
     },
     orderProducts: [
       {
@@ -101,6 +65,8 @@ export const SAMPLE_ORDERS = [
       date: "2025-03-13",
       orderNumber: 2,
       finalPrice: 160,
+      status: "InProgress",
+
     },
     orderProducts: [
       {
@@ -132,6 +98,8 @@ export const SAMPLE_ORDERS = [
       date: "2025-03-14",
       orderNumber: 3,
       finalPrice: 120,
+      status: "Completed",
+
     },
     orderProducts: [
       {
@@ -163,6 +131,8 @@ export const SAMPLE_ORDERS = [
       date: "2025-03-15",
       orderNumber: 4,
       finalPrice: 120,
+      status: "InProgress",
+
     },
     orderProducts: [
       {
@@ -187,6 +157,8 @@ export const SAMPLE_ORDERS = [
       date: "2025-03-16",
       orderNumber: 5,
       finalPrice: 50,
+      status: "Pending",
+
     },
     orderProducts: [
       {

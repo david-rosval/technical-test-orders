@@ -1,4 +1,4 @@
-
+export type Status = "Pending" | "InProgress" | "Completed"
 
 export type OrderProduct = {
   id?: number // Auto
@@ -7,6 +7,23 @@ export type OrderProduct = {
   quantity: number
   unitPrice: number
   subTotal: number
+}
+
+export type FetchedOrder = {
+  orderInfo: {
+    id: number,
+    date: string,
+    orderNumber: number,
+    finalPrice: number,
+    status?: Status
+  },
+  orderProducts: {
+    id: number,
+    name:string ,
+    unitPrice: number,
+    quantity: number,
+    subTotal: number
+  }[]
 }
 
 export type Product = {
@@ -19,7 +36,8 @@ export type Order = {
   id?: number // Auto
   date?: string // Auto
   orderNumber: number
-  finalPrice?: number 
+  finalPrice?: number
+  status?: Status
 }
 
 export type OrderToEdit= {
@@ -27,6 +45,8 @@ export type OrderToEdit= {
   date: string,
   orderNumber: number,
   finalPrice: number,
+  status?: Status
+
 }
 
 export type OrderRow = {
@@ -35,6 +55,8 @@ export type OrderRow = {
   date: string,
   productsQty: number,
   finalPrice: number,
+  status?: Status
+
 }
 
 export type ProductTableRow = {
@@ -43,4 +65,17 @@ export type ProductTableRow = {
   unitPrice: number
   quantity: number
   subTotal: number
+}
+
+export type InsertOrderBody = {
+  orderNumber: number,
+  products: {
+    productId: number
+    quantity: number
+    unitPrice: number
+  }[]
+}
+
+export type UpdateOrderStatusBody = {
+  status: Status
 }
